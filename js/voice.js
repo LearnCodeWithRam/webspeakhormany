@@ -11,6 +11,7 @@ recognition.continuous = true;
 //stopButton.disabled = true;
 let commandExecuted = false;
 var elements = ' ';
+let selectedVideo = null; // Variable to store the selected video element
 
 // startButton.addEventListener('click', () => {
 //     recognition.start();
@@ -190,6 +191,64 @@ if (cmd.includes('stop')) {
 if (cmd.includes('help')) {
     // Display help window
     displayHelpWindow();
+}
+
+if (cmd.includes('select video')) {
+    // Select video
+    selectVideo();
+}
+if (cmd.includes('stop video')) {
+    // Stop video playback
+    stopVideo();
+} 
+if (cmd.includes('start video')) {
+    // Play video
+    playVideo();
+}
+if (cmd.includes('forward video')) {
+    // Forward video
+    forwardVideo();
+}
+
+function stopVideo() {
+    if (selectedVideo) {
+        selectedVideo.pause();
+        displayGuidingMessage('Video playback stopped.');
+    } else {
+        displayGuidingMessage('No video selected.');
+    }
+}
+
+function playVideo() {
+    if (selectedVideo) {
+        selectedVideo.play();
+        displayGuidingMessage('Video playback started.');
+    } else {
+        displayGuidingMessage('No video selected.');
+    }
+}
+
+function forwardVideo() {
+    if (selectedVideo) {
+        selectedVideo.currentTime += 10; // Forward by 10 seconds (adjust as needed)
+        displayGuidingMessage('Video forwarded.');
+    } else {
+        displayGuidingMessage('No video selected.');
+    }
+}
+
+function selectVideo() {
+   // Add your logic for selecting a video here
+    // For example, focus on the first video element on the page
+    // Replace this with your actual implementation
+    const videos = document.querySelectorAll('video');
+    if (videos.length > 0) {
+        selectedVideo = videos[0];
+        selectedVideo.focus();
+        displayGuidingMessage('Video selected.');
+    } else {
+        displayGuidingMessage('No videos found on the page.');
+    }
 }
 
 function displayHelpWindow() {
