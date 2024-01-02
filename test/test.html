@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice-Controlled Website</title>
+</head>
+<body>
+
+<!-- Example elements to be labeled -->
+<a href="#" class="clickable-element">Click me</a>
+<button class="clickable-element">Press me</button>
+<img src="image.jpg" class="clickable-element" alt="Example Image">
+<!-- Add more elements as needed -->
+
+<form action="/action_page.php">
+    <label for="fname">First name:</label><br>
+    <input type="text" id="fname" name="fname"><br>
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lname"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+  recognition.lang = 'en-US';
+
+//   const clickableElements = document.querySelectorAll('.clickable-element');
+
+  let clickableElements = document.querySelectorAll('a, button, img, input[type="text"], input[type="submit"], input[type="button"]');
+//   let counter = 0;
+//   clickableElements.forEach(function(element) {
+//     element.setAttribute('data-clickable-id', counter);
+//     counter++;
+// });
+
+  recognition.onresult = function(event) {
+    const result = event.results[0][0].transcript.toLowerCase();
+    result = 'click';
+    console.log(result);
+    if (result.includes('click')) {
+      clickableElements.forEach((element, index) => {
+        element.setAttribute('data-label', index + 1);
+
+        if (result.includes(index + 1)) {
+          activateElement(element);
+        }
+      });
+    }
+  };
+
+  recognition.onend = function() {
+    recognition.start();
+  };
+
+  recognition.start();
+
+  function activateElement(element) {
+    // Perform the desired action when an element is activated
+    // For demonstration purposes, we'll just simulate a click event
+    element.click();
+  }
+});
+</script>
+
+</body>
+</html>

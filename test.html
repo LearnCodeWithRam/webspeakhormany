@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice-Controlled Website</title>
+</head>
+<body>
+
+<!-- Example elements to be labeled -->
+<a href="#" id="element1">Click me</a>
+<button id="element2">Press me</button>
+<img src="image.jpg" id="element3" alt="Example Image">
+<!-- Add more elements as needed -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const recognition = new (webkitSpeechRecognition || SpeechRecognition)();
+  recognition.lang = 'en-US';
+
+  recognition.onresult = function(event) {
+    const result = event.results[0][0].transcript.toLowerCase();
+    const elements = document.querySelectorAll('[id^="element"]');
+    
+    elements.forEach((element, index) => {
+      element.setAttribute('data-label', index + 1);
+
+      if (result.includes(index + 1)) {
+        activateElement(element);
+      }
+    });
+  };
+
+  recognition.onend = function() {
+    recognition.start();
+  };
+
+  recognition.start();
+
+  function activateElement(element) {
+    // Perform the desired action when an element is activated
+    // For demonstration purposes, we'll just simulate a click event
+    element.click();
+  }
+});
+</script>
+
+</body>
+</html>
